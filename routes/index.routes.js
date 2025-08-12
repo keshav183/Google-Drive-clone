@@ -3,17 +3,18 @@ const router = express.Router();
 const multer = require('multer')
 const upload = multer({ storage : multer.memoryStorage() });
 const supabase = require('../config/supabaseClient');
-
-
-
-
-
-
+const fileModel = require('../models/files.model')
 
 router.get('/home' , (req , res)=>{
     res.render('home');
 })
 router.post('/upload', upload.single('file'), async (req, res) => {
+
+    const newFile = await fileModel.create({
+      path:req.file.path,
+      originalname:req.file.originalname,
+      
+    })
     try {
       const file = req.file;
   
